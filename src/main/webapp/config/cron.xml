@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<crons>
+    <cron id="liuang@cnic.cn" email="liuang@cnic.cn">
+        <checkInTime>
+            <from>8:00</from>
+            <end>8:30</end>
+        </checkInTime>
+        <checkOutTime>
+            <from>7:00</from>
+            <end>8:00</end>
+        </checkOutTime>
+    </cron>
+</crons>
