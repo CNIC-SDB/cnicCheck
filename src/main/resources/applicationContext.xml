@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:component-scan base-package="cn.cnic.autocheck">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
     <!-- 这个类用来做需要完成的业务-->
     <bean id="myJob2" class="cn.cnic.autocheck.service.job.MyJob"></bean>
 
@@ -16,11 +20,11 @@
         <property name="concurrent" value="false"/>
     </bean>
 
-    <!-- 定义触发时间 ，这边就不同了，这里必须将时间设置成无限长，因为我们要去读取数据库的时间来做为定时器的触发时间-->
+    <!-- 定义触发时间 ，8点到22点每分钟进行检查，是否需要进行打卡-->
     <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean ">
         <property name="jobDetail" ref="jobtask"/>
         <!-- cron表达式  -->
-        <property name="cronExpression" value="0/1 * * * * ?"/>
+        <property name="cronExpression" value="0 0/1 8-22 * * ?"/>
     </bean>
 
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序  -->
@@ -33,7 +37,7 @@
         </property>
     </bean>
 
-    <!--这个类是用来设置触发时间的， startJobs方法启动调度容器，然后按照上面触发器每隔1s执行所配置的myJob2.doSomething()方法 -->
+    <!--这个类是用来设置触发时间的， startJobs方法启动调度容器 -->
     <bean id="quartzManager" class="cn.cnic.autocheck.service.job.QuartzManager" lazy-init="false"
           init-method="startJobs">
         <!--这个对象一定要注入，这样类才能进行管理，还有在类型要用get set方法，不然会报错。-->
