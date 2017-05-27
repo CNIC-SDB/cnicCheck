@@ -28,6 +28,9 @@
 </head>
 <body class="bg">
 <div class="container">
+    <div class="row">
+        <div style="float: right" id="time"></div>
+    </div>
     <button class="btn btn-primary" onclick="show()">添加</button>
     <table class="table">
         <tr>
@@ -52,7 +55,8 @@
                 <td>
                     <a href="#" class="edit btn btn-primary btn-sm">修改</a>
                     <a href="#" class="del btn btn-danger btn-sm" data-id="${job.id}">删除</a>
-                    <a>日志</a>
+                    <a href="#" class="check btn btn-default btn-sm" data-id="${job.id}" data-type="checkin">上班</a>
+                    <a href="#" class="check btn btn-default btn-sm" data-id="${job.id}" data-type="checkout">下班</a>
                 </td>
             </tr>
         </c:forEach>
@@ -145,6 +149,34 @@
                 }
             });
         });
+        $(".check").click(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "${ctx}/check",
+                type: "get",
+                data: {id: $(this).attr("data-id"), type: $(this).attr("data-type")},
+                success: function (r) {
+                    if (r) {
+                        alert("打卡成功");
+                    } else {
+                        alert("打卡失败");
+                    }
+                },
+                error: function () {
+                    alert("打卡失败");
+                }
+            });
+        });
+        window.setInterval(function () {
+            $.ajax({
+                url: "${ctx}/time",
+                type: "get",
+                success: function (result) {
+                    $("#time").html(result);
+                }
+            });
+        }, 1000);
+
     });
     function show() {
         $("#modal").modal('show');
