@@ -32,6 +32,7 @@ public class XMLReader {
             CronJob cronJob = new CronJob();
             cronJob.setId(id);
             cronJob.setEmail(element.attributeValue("email"));
+            cronJob.setCode(element.attributeValue("code"));
             cronJob.setCheckInTimeFrom(element.attributeValue("checkInTimeFrom"));
             cronJob.setCheckInTimeTo(element.attributeValue("checkInTimeTo"));
             cronJob.setCheckOutTimeFrom(element.attributeValue("checkOutTimeFrom"));
@@ -51,10 +52,11 @@ public class XMLReader {
             element = rootElement.addElement("cron");
         element.addAttribute("id", job.getId());
         element.addAttribute("email", job.getEmail());
+        element.addAttribute("code", job.getCode());
         element.addAttribute("checkInTimeFrom", job.getCheckInTimeFrom());
         element.addAttribute("checkInTimeTo", job.getCheckInTimeTo());
         element.addAttribute("checkOutTimeFrom", job.getCheckOutTimeFrom());
-        element.addAttribute("checkOutTimeTo", job.getCheckInTimeTo());
+        element.addAttribute("checkOutTimeTo", job.getCheckOutTimeTo());
         writeToFile(document, xmlPath);
     }
 

@@ -5,6 +5,7 @@ import cn.cnic.autocheck.utils.XMLReader;
 import org.dom4j.DocumentException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -29,6 +30,7 @@ public class IndexController {
     }
 
     @RequestMapping("/del")
+    @ResponseBody
     public String deleteJob(String id) throws IOException, DocumentException {
         List<CronJob> jobs = (List<CronJob>) context.getAttribute("jobs");
         Iterator<CronJob> iterator = jobs.iterator();
@@ -41,6 +43,7 @@ public class IndexController {
     }
 
     @RequestMapping("/add")
+    @ResponseBody
     public boolean addJob(CronJob job) throws IOException, DocumentException {
         XMLReader.addElement(job, context.getRealPath("/") + "/config/cron.xml");
         List<CronJob> jobs = XMLReader.readElements("cron", context.getRealPath("/") + "/config/cron.xml");

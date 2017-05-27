@@ -11,16 +11,20 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * Created by liuang on 2017/5/26.
  */
 public class ContextInitListener implements ServletContextListener {
 
+    public static ServletContext context;
+    public static ExecutorService pool = new ThreadPoolExecutor(5, 5, 10, TimeUnit.MINUTES, new ArrayBlockingQueue<Runnable>(20));
     private Logger logger = LoggerFactory.getLogger(ContextInitListener.class);
 
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext context = servletContextEvent.getServletContext();
+        ContextInitListener.context = context;
         try {
             List<CronJob> jobs = XMLReader.readElements("cron", context.getRealPath("/") + "/config/cron.xml");
             context.setAttribute("jobs", jobs);
@@ -32,6 +36,6 @@ public class ContextInitListener implements ServletContextListener {
     }
 
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-
+        pool.shutdown();
     }
 }

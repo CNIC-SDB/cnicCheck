@@ -12,7 +12,9 @@ public class CronJob {
     private String checkInTimeTo;
     private String checkOutTimeFrom;
     private String checkOutTimeTo;
-
+    private String code;
+    private String checkInTime;
+    private String checkOutTime;
     public String getId() {
         return id;
     }
@@ -61,17 +63,42 @@ public class CronJob {
         this.checkOutTimeTo = checkOutTimeTo;
     }
 
-    public String getCheckInTime() {
+    public void setCheckInTime() {
         String hours1 = this.checkInTimeFrom.split(":")[0];
         String min1 = this.checkInTimeFrom.split(":")[1];
         Random random = new Random();
         int min = Integer.parseInt(min1) + random.nextInt(30);
-        return hours1 + ":" + min;
+        checkInTime = hours1 + ":" + min;
+        System.out.println(this.getId() + "今天生成的上班时间是：" + checkInTime);
+    }
+
+    public void setCheckOutTime() {
+        String hours1 = this.checkOutTimeFrom.split(":")[0];
+        String min1 = this.checkOutTimeFrom.split(":")[1];
+        Random random = new Random();
+        int r = random.nextInt(120);
+        int hour = Integer.parseInt(hours1), min = Integer.parseInt(min1);
+        hour += r / 60;
+        min += r % 60;
+        hour += min / 60;
+        min %= 60;
+        checkOutTime = hour + ":" + min;
+        System.out.println(this.getId() + "今天生成的下班时间是：" + checkOutTime);
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getCheckInTime() {
+        return checkInTime;
     }
 
     public String getCheckOutTime() {
-        String hours1 = this.checkOutTimeFrom.split(":")[0];
-        String min1 = this.checkOutTimeFrom.split(":")[1];
-        return "";
+        return checkOutTime;
     }
 }

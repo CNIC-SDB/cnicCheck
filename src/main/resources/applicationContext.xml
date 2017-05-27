@@ -7,7 +7,9 @@
     </context:component-scan>
 
     <!-- 这个类用来做需要完成的业务-->
-    <bean id="myJob2" class="cn.cnic.autocheck.service.job.MyJob"></bean>
+    <bean id="myJob2" class="cn.cnic.autocheck.service.job.MyJob">
+        <property name="emailService" ref="emailService"/>
+    </bean>
 
     <!-- 定时任务 -->
     <!-- 定义调用对象和调用对象的方法，这个配置和普通的一样的,id是JobDetail的名字  -->
@@ -42,5 +44,23 @@
           init-method="startJobs">
         <!--这个对象一定要注入，这样类才能进行管理，还有在类型要用get set方法，不然会报错。-->
         <property name="scheduler" ref="startQuertz"/>
+    </bean>
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.cstnet.cn"/>
+        <property name="defaultEncoding" value="UTF-8"></property>
+        <property name="username" value="vdbcloud@cnic.cn"></property>
+        <property name="password" value="sdc123456"></property>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.timeout">25000</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- this is a template message that we can pre-load with default state -->
+    <bean id="message" class="org.springframework.mail.SimpleMailMessage">
+        <property name="from" value="vdbcloud@cnic.cn"/>
     </bean>
 </beans>

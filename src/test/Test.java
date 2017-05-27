@@ -1,4 +1,6 @@
 import cn.cnic.autocheck.model.CronJob;
+import cn.cnic.autocheck.service.EmailService;
+import cn.cnic.autocheck.utils.HttpUtil;
 import cn.cnic.autocheck.utils.XMLReader;
 import org.dom4j.DocumentException;
 import org.junit.runner.RunWith;
@@ -21,6 +23,8 @@ import java.util.List;
 public class Test {
     @Resource
     private ApplicationContext applicationContext;
+    @Resource
+    private EmailService emailService;
 
     @org.junit.Test
     public void test() throws InterruptedException, IOException, DocumentException {
@@ -46,5 +50,15 @@ public class Test {
         for (CronJob job : cronJobs) {
             System.out.println(job.getId() + "-" + job.getCheckInTime() + "-" + job.getCheckInTimeFrom());
         }
+    }
+
+    @org.junit.Test
+    public void testHttp() throws IOException {
+        System.out.println(HttpUtil.get("http://159.226.29.10/CnicCheck/CheckServlet?weidu=39.9794962420&jingdu=116.3293553275&type=checkin&token=589868f2a6092320d2829e9526f674b"));
+    }
+
+    @org.junit.Test
+    public void testEmail() {
+        emailService.sendEmail("1231", "liuang@cnic.cn", "123123");
     }
 }
