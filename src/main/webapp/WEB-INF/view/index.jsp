@@ -20,6 +20,10 @@
             -moz-background-size: 100% 100%;
             background-size: 100% 100%;
         }
+
+        table th {
+            font-size: 12px;
+        }
     </style>
 </head>
 <body class="bg">
@@ -32,6 +36,8 @@
             <th>code</th>
             <th>上班打卡时间段</th>
             <th>下班打卡时间段</th>
+            <th>今日上班时间</th>
+            <th>今日下班时间</th>
             <th></th>
         </tr>
         <c:forEach items="${applicationScope.jobs}" var="job">
@@ -41,9 +47,11 @@
                 <td>${job.code}</td>
                 <td>${job.checkInTimeFrom}-${job.checkInTimeTo}</td>
                 <td>${job.checkOutTimeFrom}-${job.checkOutTimeTo}</td>
+                <td>${job.checkInTime}</td>
+                <td>${job.checkOutTime}</td>
                 <td>
-                    <a href="#" class="edit btn btn-primary">修改</a>
-                    <a href="#" class="del btn btn-danger" data-id="${job.id}">删除</a>
+                    <a href="#" class="edit btn btn-primary btn-sm">修改</a>
+                    <a href="#" class="del btn btn-danger btn-sm" data-id="${job.id}">删除</a>
                     <a>日志</a>
                 </td>
             </tr>

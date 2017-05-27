@@ -3,6 +3,7 @@ package cn.cnic.autocheck.service.job;
 import cn.cnic.autocheck.model.CronJob;
 import cn.cnic.autocheck.service.EmailService;
 import cn.cnic.autocheck.utils.HttpUtil;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,7 +31,9 @@ public class CheckThread implements Runnable {
                 "&token=" + job.getCode();
         boolean isCheck = false;
         try {
-            isCheck = HttpUtil.get(url);
+            JSONObject jsonObject = HttpUtil.get(url);
+            if (jsonObject != null && jsonObject.getString("success").equals("true"))
+                isCheck = true;
         } catch (IOException e) {
             logger.error("发送打卡请求失败:" + job.getId(), e);
         }

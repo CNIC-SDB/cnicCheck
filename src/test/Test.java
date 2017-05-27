@@ -12,6 +12,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.annotation.Resource;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -54,7 +56,9 @@ public class Test {
 
     @org.junit.Test
     public void testHttp() throws IOException {
-        System.out.println(HttpUtil.get("http://159.226.29.10/CnicCheck/CheckServlet?weidu=39.9794962420&jingdu=116.3293553275&type=checkin&token=589868f2a6092320d2829e9526f674b"));
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        System.out.println(HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime())));
     }
 
     @org.junit.Test

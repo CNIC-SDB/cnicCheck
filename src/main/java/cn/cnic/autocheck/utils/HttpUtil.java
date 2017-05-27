@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public class HttpUtil {
 
-    public static boolean get(String url) throws IOException {
+    public static JSONObject get(String url) throws IOException {
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpClient httpClient = HttpClients.createDefault();
         RequestConfig requestConfig = RequestConfig.custom().setSocketTimeout(2000).setConnectTimeout(2000).build();
@@ -26,13 +26,11 @@ public class HttpUtil {
         CloseableHttpResponse response = httpClient.execute(httpGet);
         HttpEntity entity = response.getEntity();
         if (entity == null)
-            return false;
+            return null;
         String result = IOUtils.toString(entity.getContent(), "utf-8");
         if (StringUtils.isEmpty(result))
-            return false;
+            return null;
         JSONObject jsonObject = JSONObject.parseObject(result);
-        if (jsonObject.getString("success").equals("true"))
-            return true;
-        return false;
+        return jsonObject;
     }
 }

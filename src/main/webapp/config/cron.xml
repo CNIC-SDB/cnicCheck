@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <crons>
-  <cron id="liuang@cnic.cn" email="liuang@cnic.cn" code="5b89868f2a6092320d2829e9526f674b" checkInTimeFrom="15:30"
-        checkInTimeTo="16:00" checkOutTimeFrom="15:30"
+  <cron id="liuang" email="liuang@cnic.cn" code="5b89868f2a6092320d2829e9526f674b" checkInTimeFrom="8:00"
+        checkInTimeTo="8:30" checkOutTimeFrom="17:30"
         checkOutTimeTo="21:00"/>
-  <cron id="huangwei@cnic.cn" email="hwei@cnic.cn" code="2a23165f64f42b8df2f238933f897d64" checkInTimeFrom="15:30"
-        checkInTimeTo="16:00"
-        checkOutTimeFrom="15:30" checkOutTimeTo="19:00"/>
+  <cron id="huangwei" email="hwei@cnic.cn" code="2a23165f64f42b8df2f238933f897d64" checkInTimeFrom="9:00"
+        checkInTimeTo="9:30"
+        checkOutTimeFrom="18:00" checkOutTimeTo="19:00"/>
 </crons>

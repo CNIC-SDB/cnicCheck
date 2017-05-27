@@ -3,7 +3,9 @@ package cn.cnic.autocheck.service.job;
 import cn.cnic.autocheck.listener.ContextInitListener;
 import cn.cnic.autocheck.model.CronJob;
 import cn.cnic.autocheck.service.EmailService;
+import cn.cnic.autocheck.utils.HttpUtil;
 import cn.cnic.autocheck.utils.XMLReader;
+import com.alibaba.fastjson.JSONObject;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,8 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import javax.servlet.ServletContext;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +28,18 @@ public class MyJob {
     private Logger logger = LoggerFactory.getLogger(MyJob.class);
     private ServletContext context;
     private EmailService emailService;
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
     public void doSomething() {
         context = ContextInitListener.context;
         Calendar calendar = Calendar.getInstance();
+        //判断是不是节假日
+        try {
+            JSONObject jsonObject = HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime()));
+            if (jsonObject != null && !jsonObject.getString(sdf.format(calendar.getTime())).equals("0"))
+                return;
+        } catch (IOException e) {
+            logger.error("判断节假日失败", e);
+        }
         //早上8点，计算新一天每个人的打卡时间，时间段内随机时间
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
