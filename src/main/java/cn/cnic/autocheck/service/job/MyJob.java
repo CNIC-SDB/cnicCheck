@@ -41,7 +41,7 @@ public class MyJob {
             //判断是不是节假日
             try {
                 JSONObject jsonObject = HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime()));
-                if (jsonObject != null && !jsonObject.getString(sdf.format(calendar.getTime())).equals("0"))
+                if (jsonObject != null && jsonObject.getString(sdf.format(calendar.getTime())).equals("0"))
                     isHoliday = false;
                 else
                     isHoliday = true;
@@ -70,6 +70,19 @@ public class MyJob {
             String checkInTime = job.getCheckInTime();
             String checkOutTime = job.getCheckOutTime();
             if (StringUtils.isEmpty(checkInTime) || StringUtils.isEmpty(checkOutTime)) {
+                //判断是不是节假日
+                try {
+                    JSONObject jsonObject = HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime()));
+                    if (jsonObject != null && jsonObject.getString(sdf.format(calendar.getTime())).equals("0"))
+                        isHoliday = false;
+                    else
+                        isHoliday = true;
+                } catch (IOException e) {
+                    logger.error("判断节假日失败,默认今天上班", e);
+                    isHoliday = false;
+                }
+                if (isHoliday)
+                    return;
                 job.setCheckInTime();
                 job.setCheckOutTime();
                 checkInTime = job.getCheckInTime();

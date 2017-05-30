@@ -2,6 +2,7 @@ import cn.cnic.autocheck.model.CronJob;
 import cn.cnic.autocheck.service.EmailService;
 import cn.cnic.autocheck.utils.HttpUtil;
 import cn.cnic.autocheck.utils.XMLReader;
+import com.alibaba.fastjson.JSONObject;
 import org.dom4j.DocumentException;
 import org.junit.runner.RunWith;
 import org.springframework.context.ApplicationContext;
@@ -58,9 +59,11 @@ public class Test {
     public void testHttp() throws IOException {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-//        System.out.println(HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime())));
-        System.out.println(HttpUtil.get("http://159.226.29.10/CnicCheck/CheckServlet?weidu=39.9794962420&jingdu=116.3293553275&type=checkin" +
-                "&token=b85e7d7ec3595b59fc3dc89c8337e56d"));
+        System.out.println(HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime())));
+        JSONObject jsonObject = HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime()));
+        System.out.println(jsonObject.getString(sdf.format(calendar.getTime())).equals("0"));
+//        System.out.println(HttpUtil.get("http://159.226.29.10/CnicCheck/CheckServlet?weidu=39.9794962420&jingdu=116.3293553275&type=checkin" +
+//                "&token=b85e7d7ec3595b59fc3dc89c8337e56d"));
     }
 
     @org.junit.Test
