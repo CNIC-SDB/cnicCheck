@@ -58,7 +58,9 @@ public class Test {
     public void testHttp() throws IOException {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        System.out.println(HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime())));
+//        System.out.println(HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime())));
+        System.out.println(HttpUtil.get("http://159.226.29.10/CnicCheck/CheckServlet?weidu=39.9794962420&jingdu=116.3293553275&type=checkin" +
+                "&token=b85e7d7ec3595b59fc3dc89c8337e56d"));
     }
 
     @org.junit.Test

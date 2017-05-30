@@ -29,21 +29,28 @@ public class MyJob {
     private ServletContext context;
     private EmailService emailService;
     private SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+    private boolean isHoliday = false;
     public void doSomething() {
         context = ContextInitListener.context;
         Calendar calendar = Calendar.getInstance();
-        //判断是不是节假日
-        try {
-            JSONObject jsonObject = HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime()));
-            if (jsonObject != null && !jsonObject.getString(sdf.format(calendar.getTime())).equals("0"))
-                return;
-        } catch (IOException e) {
-            logger.error("判断节假日失败", e);
-        }
+
         //早上8点，计算新一天每个人的打卡时间，时间段内随机时间
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int min = calendar.get(Calendar.MINUTE);
         if (hour == 8 && min == 0) {
+            //判断是不是节假日
+            try {
+                JSONObject jsonObject = HttpUtil.get("http://www.easybots.cn/api/holiday.php?d=" + sdf.format(calendar.getTime()));
+                if (jsonObject != null && !jsonObject.getString(sdf.format(calendar.getTime())).equals("0"))
+                    isHoliday = false;
+                else
+                    isHoliday = true;
+            } catch (IOException e) {
+                logger.error("判断节假日失败,默认今天上班", e);
+                isHoliday = false;
+            }
+            if (isHoliday)
+                return;
             try {
                 List<CronJob> jobs = (List<CronJob>) context.getAttribute("jobs");
                 for (CronJob job : jobs) {
@@ -53,6 +60,10 @@ public class MyJob {
             } catch (Exception e) {
                 logger.error("计算新打卡时间失败", e);
             }
+        }
+        if (isHoliday) {
+            logger.info("今天节假日！");
+            return;
         }
         List<CronJob> jobs = (List<CronJob>) context.getAttribute("jobs");
         for (CronJob job : jobs) {

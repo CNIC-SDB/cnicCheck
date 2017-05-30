@@ -156,7 +156,7 @@
                 type: "get",
                 data: {id: $(this).attr("data-id"), type: $(this).attr("data-type")},
                 success: function (r) {
-                    if (r) {
+                    if (r && r == 'true') {
                         alert("打卡成功");
                     } else {
                         alert("打卡失败");

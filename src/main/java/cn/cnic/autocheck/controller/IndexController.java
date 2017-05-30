@@ -5,6 +5,8 @@ import cn.cnic.autocheck.utils.HttpUtil;
 import cn.cnic.autocheck.utils.XMLReader;
 import com.alibaba.fastjson.JSONObject;
 import org.dom4j.DocumentException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,7 @@ public class IndexController {
     @Resource
     ServletContext context;
 
+    private Logger logger = LoggerFactory.getLogger(IndexController.class);
     @RequestMapping("/")
     public ModelAndView loadJobs() {
         ModelAndView mav = new ModelAndView("index");
@@ -69,13 +72,17 @@ public class IndexController {
         List<CronJob> jobs = (List<CronJob>) context.getAttribute("jobs");
         for (CronJob job : jobs) {
             if (job.getId().equals(id)) {
+                logger.info(id + "手动打卡！");
                 String url = "http://159.226.29.10/CnicCheck/CheckServlet?weidu=39.9794962420&jingdu=116.3293553275&type=" + type +
                         "&token=" + job.getCode();
                 try {
                     JSONObject jsonObject = HttpUtil.get(url);
-                    if (jsonObject != null || jsonObject.getString("success").equals("true"))
+                    if (jsonObject != null || jsonObject.getString("success").equals("true")) {
+                        logger.info(id + "手动打卡成功！");
                         return true;
+                    }
                 } catch (IOException e) {
+                    logger.info(id + "手动打卡失败！");
                     e.printStackTrace();
                     return false;
                 }
