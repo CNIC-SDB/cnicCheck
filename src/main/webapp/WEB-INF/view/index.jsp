@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="${ctx}/resources/bootstrapv3.3/css/bootstrap.min.css">
     <style>
         .bg {
-            background: url(${ctx}/resources/freedom.png);
+            background: url(${ctx}/resources/freedom-min.png);
             filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale')";
             -moz-background-size: 100% 100%;
             background-size: 100% 100%;
